@@ -34,3 +34,29 @@ function removeOrderById(id){
 			alert("There is a problem we can delete the given Order");
 		});
 }
+
+function loadOrders(){
+    orders = [];
+    axios.get('/orders')
+    .then(function(result){
+    orders = result.data;
+             
+    $("#change").empty();
+    for(i in orders){
+            products = Object.keys(orders[i].orderAmountsMap);
+            console.log(products);
+            $("#change").append("<p id='tag"+i+"'>tabla "+i+ "</p>");                                
+            $("#change").append("<table id="tabla" class="table table-striped"> <thead class="thead-light"> <tr> <th scope="col">Product</th> <th scope="col">Quantity</th> <th scope="col">Prices</th> </tr> </thead>");
+            for(j in products){
+                    console.log(orders[i].orderAmountsMap[products[j]]);
+                    str="#Order"+i.toString();
+                    $(str).append("<tbody> <tr> <td>"+products[j]+"</td> <td>"+orders[i].orderAmountsMap[products[j]]+"</td> </tr> </tbody>");
+            }
+        }						
+    })
+    .catch(function(error){
+        console.log(orders);
+            console.log(error);
+            errorMessage();
+    });
+}
